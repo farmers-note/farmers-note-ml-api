@@ -24,8 +24,8 @@ jobs:
 
       - name: 🐳 Build & Push Docker image
         run: |
-          docker build -t ${{ env.IMAGE_NAME }}:latest .
-          docker push ${{ env.IMAGE_NAME }}:latest
+          docker build -t ${{ secrets.IMAGE_NAME }}:latest .
+          docker push ${{ secrets.IMAGE_NAME }}:latest
 
       - name: 🚀 Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -39,7 +39,7 @@ jobs:
             sudo mkdir -p $DEPLOY_DIR
             cd $DEPLOY_DIR
             
-            echo "Pulling latest image: ${{ env.IMAGE_NAME }}"
+            echo "Pulling latest image: ${{ secrets.IMAGE_NAME }}"
             sudo docker compose pull
             
             # Docker Compose 서비스 중단, 재생성 및 시작
