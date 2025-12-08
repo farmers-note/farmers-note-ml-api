@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # 3. 애플리케이션 코드와 모델 디렉토리 복사
 # app.py와 DB 관련 함수들이 있는 파일을 app.py라고 가정
-COPY app.py .
+COPY apiv3.py .
 # model/ 디렉토리 전체를 복사합니다.
 COPY model /app/model
 
