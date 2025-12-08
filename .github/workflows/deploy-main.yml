@@ -1,0 +1,48 @@
+name: Flask App Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }} 
+
+jobs:
+  build-deploy-main:
+    runs-on: ubuntu-latest
+    environment: farmers-note-backend
+
+    steps:
+      - name: ⬇️ Checkout source code
+        uses: actions/checkout@v3
+      
+      - name: 🔑 Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 🐳 Build & Push Docker image
+        run: |
+          docker build -t ${{ env.IMAGE_NAME }}:latest .
+          docker push ${{ env.IMAGE_NAME }}:latest
+
+      - name: 🚀 Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # EC2 서버 내 작업 디렉토리 설정
+            DEPLOY_DIR="/opt/farmersnote"
+            sudo mkdir -p $DEPLOY_DIR
+            cd $DEPLOY_DIR
+            
+            echo "Pulling latest image: ${{ env.IMAGE_NAME }}"
+            sudo docker compose pull
+            
+            # Docker Compose 서비스 중단, 재생성 및 시작
+            sudo docker compose up -d --remove-orphans
+            
+            echo "🎉 Flask 서비스 배포 및 재시작 완료!"
