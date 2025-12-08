@@ -7,10 +7,9 @@ WORKDIR /app
 # 1. 필수 라이브러리 목록을 정의합니다.
 RUN echo "Flask" > requirements.txt && \
     echo "gunicorn" >> requirements.txt && \
-    echo "onnxruntime==1.17.0" >> requirements.txt && \
+    echo "onnxruntime" >> requirements.txt && \ 
     echo "Pillow" >> requirements.txt && \
-    # ⭐️ NumPy 버전을 2.0 미만으로 명시적으로 고정
-    echo "numpy<2" >> requirements.txt && \ 
+    echo "numpy<2.0" >> requirements.txt && \
     echo "mysql-connector-python" >> requirements.txt && \
     echo "flask-cors" >> requirements.txt
 
