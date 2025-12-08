@@ -15,6 +15,22 @@ IMG_SIZE = 224
 mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
 std  = np.array([0.229, 0.224, 0.225], dtype=np.float32)
 
+WEBAPP_DIR = "build"
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_webapp(path):
+    """
+    루트 URL(/) 및 웹앱의 모든 경로를 빌드 폴더의 index.html로 라우팅합니다.
+    """
+    if path != "" and os.path.exists(os.path.join(WEBAPP_DIR, path)):
+        return send_from_directory(WEBAPP_DIR, path)
+    
+    elif path.startswith("api") or path.startswith("records"):
+        pass
+        
+    return send_from_directory(WEBAPP_DIR, 'index.html')
+
 # 최대 캐시: 최근 사용 모델 2개만 메모리에 유지
 MAX_CACHED_MODELS = 2
 

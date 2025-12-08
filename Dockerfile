@@ -20,6 +20,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY apiv3.py .
 # model/ 디렉토리 전체를 복사합니다.
 COPY model /app/model
+# 프로젝트 루트에 'build' 폴더가 있다고 가정
+COPY build /app/build
 
 # 4. 포트 8000 노출
 EXPOSE 8000
