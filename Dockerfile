@@ -5,12 +5,12 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # 1. 필수 라이브러리 목록을 정의합니다.
-# requirements.txt 파일이 없으므로 직접 나열합니다.
 RUN echo "Flask" > requirements.txt && \
     echo "gunicorn" >> requirements.txt && \
     echo "onnxruntime==1.17.0" >> requirements.txt && \
     echo "Pillow" >> requirements.txt && \
-    echo "numpy" >> requirements.txt && \
+    # ⭐️ NumPy 버전을 2.0 미만으로 명시적으로 고정
+    echo "numpy<2" >> requirements.txt && \ 
     echo "mysql-connector-python" >> requirements.txt && \
     echo "flask-cors" >> requirements.txt
 
