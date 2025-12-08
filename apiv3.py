@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from PIL import Image
 import numpy as np
 import onnxruntime as ort
@@ -7,6 +7,7 @@ from collections import OrderedDict
 import mysql.connector
 from datetime import datetime
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
